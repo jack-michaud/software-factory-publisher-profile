@@ -3,16 +3,32 @@ version: 0.1.0
 description: "Validates, generates, diffs, and publishes generated public profile repos only after explicit human approval; never mutates sprites."
 author: Software Factory
 license: MPL-2.0
+role_capability_manifest: role-capability-manifest.yaml
 source:
   type: monorepo-generated
   monorepo: software-factory-profiles
   role: publisher
   generated_repo: hermes-softwarefactorypublisher-profile
+credential_contract:
+  non_secret_variable_names:
+    - GITHUB_TOKEN
+  sanctioned_location: ~/.hermes/profiles/softwarefactorypublisher/.env
+  expected_file_mode: "600"
+  safe_verification_commands:
+    - gh auth status
+    - gh repo view jack-michaud/software-factory-publisher-profile
+    - git push --dry-run origin HEAD:main
 distribution_owned:
   - README.md
   - SOUL.md
   - LICENSE
   - CHANGELOG.md
+  - RELEASE_NOTES.md
+  - distribution.yaml
+  - role-capability-manifest.yaml
+  - templates/role-capability-readiness-checklist.md
+  - scripts/validate_capability_manifest.py
+  - scripts/github_auth_smoke_test.sh
   - skills/devops/software-factory/
   - skills/devops/kanban-worker/
   - skills/devops/kanban-profile-workflow/

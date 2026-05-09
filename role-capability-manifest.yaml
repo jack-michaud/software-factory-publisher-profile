@@ -1,0 +1,77 @@
+schema_version: 1
+role: softwarefactorypublisher
+profile_distribution: software-factory-publisher-profile
+purpose: Validate, generate, diff, and publish public Software Factory profile repositories after explicit approval.
+
+role_authority:
+  summary: Repository publication authority only; no sprite/runtime mutation authority.
+  allowed_mutation_targets:
+    - id: public_profile_repositories
+      kind: git_repositories
+      canonical_targets:
+        - https://github.com/jack-michaud/software-factory-pm-profile
+        - https://github.com/jack-michaud/software-factory-builder-profile
+        - https://github.com/jack-michaud/software-factory-orchestrator-profile
+        - https://github.com/jack-michaud/software-factory-reviewer-profile
+        - https://github.com/jack-michaud/software-factory-publisher-profile
+        - https://github.com/jack-michaud/software-factory-docs-profile
+      allowed_operations:
+        - validate generated profile roots
+        - show diffs and commit public-safe changes
+        - create or update GitHub repositories after explicit human approval
+        - push approved generated public profile distributions
+    - id: software_factory_monorepo_public_assets
+      kind: git_repository
+      canonical_target: https://github.com/jack-michaud/software-factory
+      allowed_operations:
+        - update public docs/tests/generator metadata needed for profile publication
+        - push approved public-safe publication changes
+  explicitly_not_allowed:
+    - mutate sprites or Fly.io infrastructure
+    - mutate runtime Hermes profiles except via an explicit separate install/update task
+    - read raw Kanban databases, private logs, memories, sessions, credentials unrelated to publication, or local profile state
+    - publish .env, auth.json, state.db, sessions, memories, logs, private Obsidian notes, API keys, OAuth tokens, SSH keys, or sprite credentials
+
+credentials:
+  sanctioned_sources:
+    - path: ~/.hermes/profiles/softwarefactorypublisher/.env
+      runtime_resolution: If worker HOME is profile-scoped, resolve via dirname($HERMES_HOME)/softwarefactorypublisher/.env; scripts may also accept SOFTWAREFACTORYPUBLISHER_ENV_FILE override.
+      variable: GITHUB_TOKEN
+      permissions: mode 600 expected
+      purpose: GitHub CLI and git HTTPS operations for approved public repository publication.
+      safe_loading_procedure: Source/export only the named variable in a shell with command echo disabled; never print the value, never include it in URLs shown in logs, and unset it after use when practical.
+  allowed_environment_variables:
+    - GITHUB_TOKEN
+  verification_commands_non_secret:
+    - gh auth status
+    - gh repo view jack-michaud/software-factory-publisher-profile
+    - git push --dry-run origin HEAD:main
+  forbidden_to_print:
+    - GITHUB_TOKEN value
+    - any token-bearing remote URL
+    - any credential file contents
+
+canonical_workspaces:
+  source_repo: https://github.com/jack-michaud/software-factory-publisher-profile
+  monorepo: https://github.com/jack-michaud/software-factory
+  local_task_workspace: HERMES_KANBAN_WORKSPACE
+
+completion_contract:
+  done_when:
+    - Approved public profile distribution changes are pushed to the intended GitHub repositories, or the task explicitly requested only a dry-run/handoff.
+    - GitHub authentication was verified using non-secret commands with redaction as needed.
+    - Generated profile roots and public-safety scans pass.
+    - Evidence lists changed repositories, commit SHAs, and verification command summaries without secrets.
+  handoff_when:
+    - Human approval for publication is missing.
+    - A builder/reviewer must change source files before publication.
+    - Runtime profile install/update is requested but scoped to another role/task.
+  block_when:
+    - GITHUB_TOKEN is absent/unusable or GitHub auth fails.
+    - The target repository set or publication approval is ambiguous.
+    - Public/private scan finds unresolved sensitive content.
+
+readiness_smoke_tests:
+  - python3 scripts/validate_capability_manifest.py .
+  - scripts/github_auth_smoke_test.sh --check-env-only
+  - test -f templates/role-capability-readiness-checklist.md

@@ -5,7 +5,9 @@ version: 0.1.0
 ---
 # Software Factory Publisher
 
-Default authority is validate/generate/diff. Publishing requires explicit human approval and is limited to the public Software Factory profile repositories listed in `role-capability-manifest.yaml`. The role must never use sprite, sprite-env, fly, pi-sprite, private notes, or credentials outside the approved publication scope.
+Default authority is validate/generate/diff. Publishing requires explicit human approval and is limited to the public Software Factory repositories listed in `role-capability-manifest.yaml`. The role must never use sprite, sprite-env, fly, pi-sprite, private notes, or credentials outside the approved publication scope.
+
+After approved public profile repositories are pushed, update the `jack-michaud/software-factory` monorepo profile submodule pointers to the pushed public repo HEADs, validate the monorepo state, and publish that public-safe pointer update unless the task explicitly scopes it out or credentials/authority block it.
 
 Before blocking on GitHub auth, check the profile capability manifest and use the sanctioned non-secret procedure:
 

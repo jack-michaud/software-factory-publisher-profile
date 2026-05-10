@@ -25,6 +25,7 @@ role_authority:
       canonical_target: https://github.com/jack-michaud/software-factory
       allowed_operations:
         - update public docs/tests/generator metadata needed for profile publication
+        - update profile submodule pointers to published public profile repository HEADs
         - push approved public-safe publication changes
   explicitly_not_allowed:
     - mutate sprites or Fly.io infrastructure

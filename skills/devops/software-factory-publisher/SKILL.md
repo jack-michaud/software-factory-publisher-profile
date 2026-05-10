@@ -11,7 +11,7 @@ After approved public profile repositories are pushed, update the `jack-michaud/
 
 ## Dependency-Gated Waiting
 
-Do not use `blocked` as the normal waiting state when a publisher or release task is waiting on another concrete Kanban task. If publication is waiting on remediation, reviewer gates, approval, install/update, docs, or any other durable Kanban work, create or identify that concrete task, link it as a parent dependency of the waiting publisher/release task, and return the publisher task to todo/ready so dependency completion re-dispatches it automatically.
+Do not use `blocked` as the normal waiting state when a publisher or release task is waiting on another concrete Kanban task. If publication is waiting on remediation, reviewer gates, approval, install/update, docs, or any other durable Kanban work, create or identify that concrete task, link it as a parent dependency of the waiting publisher/release task, and return the publisher task to todo/ready so dependency completion re-dispatches it automatically. Approval/decision gates for already-blocked seeds must not be children of those blocked seeds; create them as unparented siblings or as parent/unblockers for future execution work, then record the decision on the seed before unblocking/re-dispatching it or routing PM graph creation.
 
 Reserve `blocked` for external/manual blockers where no concrete Kanban task exists yet: missing or unusable credentials, unknown authority, missing human approval, unavailable repository/distribution, or other conditions that cannot yet be modeled as a Kanban task. If the manual blocker can be represented as an unblocker Kanban task, create or link that unblocker task and avoid stranding downstream publication work.
 

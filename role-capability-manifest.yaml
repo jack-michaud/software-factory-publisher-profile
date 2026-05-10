@@ -71,6 +71,21 @@ completion_contract:
     - GITHUB_TOKEN is absent/unusable or GitHub auth fails.
     - The target repository set or publication approval is ambiguous.
     - Public/private scan finds unresolved sensitive content.
+  dependency_gated_waiting:
+    normal_wait_state: parent_dependency
+    rule: Do not leave publisher/release work blocked when the wait condition is represented by concrete Kanban work.
+    required_steps:
+      - Create or identify the remediation, reviewer, approval, install/update, docs, or other unblocker Kanban task.
+      - Link that unblocker as a parent dependency of the waiting publisher/release task.
+      - Return the publisher/release task to todo/ready so dependency completion re-dispatches it automatically.
+    blocked_reserved_for:
+      - missing credentials
+      - unknown authority
+      - human approval not yet represented as a task
+      - unavailable repository or distribution
+      - external/manual blockers where no concrete Kanban task exists yet
+    unblocker_task_preferred: If a manual blocker can be represented as an unblocker Kanban task, create/link that task instead of stranding downstream work.
+    role_boundaries: Publisher handles authorized publication only; builder edits source; reviewer gates; installer/profile-mutation tasks install or update profiles; docs tasks produce release notes.
 
 readiness_smoke_tests:
   - python3 scripts/validate_capability_manifest.py .

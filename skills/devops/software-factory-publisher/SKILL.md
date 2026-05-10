@@ -9,6 +9,14 @@ Default authority is validate/generate/diff. Publishing requires explicit human 
 
 After approved public profile repositories are pushed, update the `jack-michaud/software-factory` monorepo profile submodule pointers to the pushed public repo HEADs, validate the monorepo state, and publish that public-safe pointer update unless the task explicitly scopes it out or credentials/authority block it.
 
+## Dependency-Gated Waiting
+
+Do not use `blocked` as the normal waiting state when a publisher or release task is waiting on another concrete Kanban task. If publication is waiting on remediation, reviewer gates, approval, install/update, docs, or any other durable Kanban work, create or identify that concrete task, link it as a parent dependency of the waiting publisher/release task, and return the publisher task to todo/ready so dependency completion re-dispatches it automatically.
+
+Reserve `blocked` for external/manual blockers where no concrete Kanban task exists yet: missing or unusable credentials, unknown authority, missing human approval, unavailable repository/distribution, or other conditions that cannot yet be modeled as a Kanban task. If the manual blocker can be represented as an unblocker Kanban task, create or link that unblocker task and avoid stranding downstream publication work.
+
+Preserve role boundaries while doing this handoff. Publisher handles authorized publication only; builder tasks own source edits; reviewer tasks own gates; installer/profile-mutation tasks own installs and runtime profile updates; docs tasks own release notes and documentation updates.
+
 Before blocking on GitHub auth, check the profile capability manifest and use the sanctioned non-secret procedure:
 
 1. Confirm `~/.hermes/profiles/softwarefactorypublisher/.env` exists with mode `600`.

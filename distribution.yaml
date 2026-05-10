@@ -8,7 +8,7 @@ source:
   type: monorepo-generated
   monorepo: software-factory-profiles
   role: publisher
-  generated_repo: hermes-softwarefactorypublisher-profile
+  generated_repo: software-factory-publisher-profile
 credential_contract:
   non_secret_variable_names:
     - GITHUB_TOKEN

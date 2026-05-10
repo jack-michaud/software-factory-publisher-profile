@@ -21,6 +21,7 @@ credential_contract:
 distribution_owned:
   - README.md
   - SOUL.md
+  - config.yaml
   - LICENSE
   - CHANGELOG.md
   - RELEASE_NOTES.md

@@ -9,6 +9,26 @@ Default authority is validate/generate/diff. Publishing requires explicit human 
 
 After approved public profile repositories are pushed, update the `jack-michaud/software-factory` monorepo profile submodule pointers to the pushed public repo HEADs, validate the monorepo state, and publish that public-safe pointer update unless the task explicitly scopes it out or credentials/authority block it.
 
+## Commit authorship for Software Factory automation
+
+Every Software Factory automation-created git commit must use author `Jack Michaud <jack@lomz.me>` and include a commit-message trailer naming the active profile display name with Jack's email, for example:
+
+```text
+Co-authored-by: Software Factory Publisher <jack@lomz.me>
+```
+
+When the `jack-michaud/software-factory` monorepo is available, use `publisher/scripts/software_factory_commit.py` for commits or mirror its policy exactly: pass `--author="Jack Michaud <jack@lomz.me>"`, set `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_NAME`, and `GIT_COMMITTER_EMAIL` only for that git invocation, and append one active-profile `Co-authored-by:` trailer. Do not set global git config for this policy; non-Software-Factory commits must keep their existing behavior.
+
+Dry-run check:
+
+```bash
+HERMES_PROFILE=softwarefactorypublisher \
+  python3 publisher/scripts/software_factory_commit.py \
+  --repo . \
+  --message "chore: verify software factory authorship" \
+  --dry-run
+```
+
 ## Dependency-Gated Waiting
 
 Do not use `blocked` as the normal waiting state when a publisher or release task is waiting on another concrete Kanban task. If publication is waiting on remediation, reviewer gates, approval, install/update, docs, or any other durable Kanban work, create or identify that concrete task, link it as a parent dependency of the waiting publisher/release task, and return the publisher task to todo/ready so dependency completion re-dispatches it automatically. Approval/decision gates for already-blocked seeds must not be children of those blocked seeds; create them as unparented siblings or as parent/unblockers for future execution work, then record the decision on the seed before unblocking/re-dispatching it or routing PM graph creation.

@@ -17,7 +17,7 @@ role_authority:
         - https://github.com/jack-michaud/software-factory-docs-profile
       allowed_operations:
         - validate generated profile roots
-        - show diffs and commit public-safe changes
+        - show diffs and commit public-safe changes with Jack Michaud author plus active-profile co-author trailer
         - create or update GitHub repositories after explicit human approval
         - push approved generated public profile distributions
     - id: software_factory_monorepo_public_assets
@@ -46,6 +46,7 @@ credentials:
   verification_commands_non_secret:
     - gh auth status
     - gh repo view jack-michaud/software-factory-publisher-profile
+    - HERMES_PROFILE=softwarefactorypublisher python3 publisher/scripts/software_factory_commit.py --repo . --message "chore: verify software factory authorship" --dry-run
     - git push --dry-run origin HEAD:main
   forbidden_to_print:
     - GITHUB_TOKEN value

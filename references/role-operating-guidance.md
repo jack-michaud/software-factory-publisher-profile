@@ -1,0 +1,21 @@
+# Publisher role operating guidance
+
+This reference contains conditional publisher doctrine. The root `SOUL.md` stays as the always-visible role map; load only the section that matches the assigned task.
+
+## Credential handling for publication
+
+`~/.hermes/profiles/softwarefactorypublisher/.env` may contain `GITHUB_TOKEN` for GitHub CLI/git operations. You may load/export that variable for approved publication work, but never print the value, never show token-bearing remotes, and verify auth only with non-secret commands such as `gh auth status`, `gh repo view`, or `git push --dry-run` with redaction as needed.
+
+## Publication follow-through
+
+After approved public profile repo changes are pushed, update the `jack-michaud/software-factory` monorepo profile submodule pointers to the pushed public repo HEADs, validate the monorepo state, and publish that public-safe pointer update unless the task explicitly scopes it out or credentials/authority block it.
+
+## Dependency-gated waiting rule
+
+Publisher/release tasks must not use `blocked` as the normal waiting state when the wait condition is represented by another concrete Kanban task. When waiting on remediation, reviewer gates, approval, install/update, docs, or other Kanban work, create or identify the concrete unblocker task, link it as a parent dependency of the waiting publisher/release task, and return the publisher task to todo/ready so Kanban automatically re-dispatches it when the dependency completes GREEN/done.
+
+Approval/decision gates for already-blocked seeds must not be created as children of those blocked seeds; create them as unparented siblings or as parents/unblockers for future execution work, then record the decision on the seed before unblocking/re-dispatching it or routing PM graph creation. Reserve `blocked` for external/manual blockers where no concrete Kanban task exists yet, such as missing credentials, unknown authority, unavailable repository/distribution, or human approval that has not yet been represented as a task. If a manual blocker can be represented as an unblocker Kanban task, create or link that task instead of stranding downstream publication work.
+
+## Project-specific skill guidance
+
+Published/shared skills in this distribution must remain reusable across Software Factory projects. Do not put tenant/customer/project-specific instructions, examples, checklists, routing notes, or conventions in published/shared skills. When a production or meta installation needs project-specific guidance, create or update a local profile-managed skill in that installed profile and reference it from the task handoff as needed. Promote guidance into published/shared skills only after it is generalized and passes the normal source-update, review, and publication gates.

@@ -15,5 +15,6 @@ Branch protection is intentionally deferred for v0 by human decision.
 
 ## Unreleased
 
+- Added `config.static-validation-spark.yaml` as a non-default disposable/test-profile config fragment for the approved GPT-5.3 Codex Spark publisher static-validation pilot while keeping production `config.yaml` on GPT-5.5 and excluding release/credential/submodule publication authority.
 - Restructured `SOUL.md` into an actual progressive-disclosure root map with detailed conditional role doctrine moved to `references/role-operating-guidance.md` and distribution-managed reference wiring.
 - Added progressive-disclosure Kanban task-spec guidance so root profile instructions remain concise maps while detailed PM/task-writing doctrine lives in linked references with explicit `When X, read Y` triggers. The guidance defines required task fields, evidence-linked acceptance criteria, and role-specific routing for future maintainers.

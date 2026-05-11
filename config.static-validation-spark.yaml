@@ -1,0 +1,15 @@
+# Non-default config for disposable/test publisher static-validation Spark pilot only.
+# Do not install over or copy into the production softwarefactorypublisher profile.
+# Approved scope: routine/static validation, dry-run diff summarization, and session/process-evidence summarization.
+# Excluded scope: actual release authority, credential/submodule publication, and default publisher downgrade.
+model:
+  default: gpt-5.3-codex-spark
+  provider: openai-codex
+  api_mode: chat_completions
+
+toolsets:
+  - hermes-cli
+
+skills:
+  external_dirs:
+    - ../../skills

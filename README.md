@@ -49,7 +49,9 @@ Public/private boundary: credentials, runtime state, logs, memories, sessions, K
 
 ## Runtime configuration
 
-This distribution owns `config.yaml`. The file pins model execution to `gpt-5.5` via provider `openai-codex` using `chat_completions`, enables the public-safe `hermes-cli` toolset, and points `skills.external_dirs` at `../../skills` so controlled installs can reuse shared skill overlays without vendoring private/local skill trees.
+This distribution owns `config.yaml`. The file pins production publisher execution to `gpt-5.5` via provider `openai-codex` using `chat_completions`, enables the public-safe `hermes-cli` toolset, and points `skills.external_dirs` at `../../skills` so controlled installs can reuse shared skill overlays without vendoring private/local skill trees.
+
+This distribution also owns `config.static-validation-spark.yaml` as a non-default, disposable/test-profile config fragment for the approved GPT-5.3 Codex Spark publisher pilot. It is only for routine/static validation, dry-run diff summarization, and session/process-evidence summarization in separately scoped install/validation tasks. Do not install it over the production `softwarefactorypublisher` profile, and do not use it for actual release authority, credential/submodule publication, or publisher default downgrade.
 
 Authority for the `softwarefactorypublisher` role is governed by `SOUL.md`, the role-specific bootstrap skill, and the checked-in `role-capability-manifest.yaml`; publisher/docs remain the manifest-backed profiles.
 

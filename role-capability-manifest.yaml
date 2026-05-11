@@ -88,6 +88,19 @@ completion_contract:
     unblocker_task_preferred: If a manual blocker can be represented as an unblocker Kanban task, create/link that task instead of stranding downstream work.
     role_boundaries: Publisher handles authorized publication only; builder edits source; reviewer gates; installer/profile-mutation tasks install or update profiles; docs tasks produce release notes.
 
+pilot_model_configs:
+  - id: gpt53_spark_static_validation
+    path: config.static-validation-spark.yaml
+    install_scope: separate disposable/test profile only; never overwrite production softwarefactorypublisher config.yaml
+    allowed_uses:
+      - routine/static validation
+      - dry-run diff summarization
+      - session/process-evidence summarization
+    explicitly_not_allowed:
+      - actual release authority
+      - credential/submodule publication
+      - production publisher default downgrade
+
 readiness_smoke_tests:
   - python3 scripts/validate_capability_manifest.py .
   - scripts/github_auth_smoke_test.sh --check-env-only

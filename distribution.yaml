@@ -21,6 +21,7 @@ credential_contract:
 distribution_owned:
   - README.md
   - SOUL.md
+  - references/progressive-disclosure-task-specs.md
   - config.yaml
   - LICENSE
   - CHANGELOG.md

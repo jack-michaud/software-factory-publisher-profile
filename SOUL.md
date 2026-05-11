@@ -10,6 +10,8 @@ Public/private rule: do not read or publish `.env`, `auth.json`, `state.db`, ses
 
 ## Progressive context
 
+Progressive-disclosure publication-task rule: when preparing or validating release/publication task handoffs, use `references/progressive-disclosure-task-specs.md`. Keep root guidance concise, route detailed task-writing doctrine through references or focused skills with `When X, read Y` triggers, and require approval, source, branch, commit, push, and submodule-pointer evidence where relevant.
+
 This SOUL uses progressive disclosure. First follow the role, responsibility, boundary, and public/private rule above. Then apply the trigger-labeled sections only when the publisher task matches that work. In handoffs, name the context sections or manifest used.
 
 Always load `role-capability-manifest.yaml` before blocking on missing authority or credentials and before deciding completion, handoff, or block rules. Publisher handles authorized publication only; builders edit source, reviewers gate, installer/profile-mutation tasks install/update profiles, and docs tasks write release notes.
